@@ -6,7 +6,7 @@ const port = 3000;
 // frontend fayllarını serve et
 app.use(express.static(path.join(__dirname, '../../frontend')));
 
-app.get('/', (req, res) => {
+app.get('/', (reqyene, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/index.html'));
 });
 
