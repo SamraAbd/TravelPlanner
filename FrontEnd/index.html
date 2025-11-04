@@ -1,1 +1,86 @@
-"<!doctype html><html><head><meta charset='utf-8'><title>Travel Planner</title></head><body><h1>Travel Planner Web App</h1></body></html>" 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Planner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span>📍</span>
+      <h1>Travel Planner</h1>
+    </div>
+    <div class="trip-total">
+      💵 Trip Total: $<span id="total-cost">0.00</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="city-selection">
+      <h2>Choose Your Destination</h2>
+      <div id="city-buttons" class="city-buttons"></div>
+    </section>
+
+    <div class="content">
+      <!-- Left side -->
+      <section class="places">
+        <div class="places-header">
+          <h2 id="city-name">Explore Baku</h2>
+          <button id="open-modal">➕ Add Custom</button>
+        </div>
+
+        <div class="filters">
+          <input type="text" id="search" placeholder="Search places..." />
+          <div id="category-filters" class="category-filters"></div>
+          <select id="sort">
+            <option value="name">Sort by Name</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+
+        <div id="places-list" class="places-list"></div>
+      </section>
+
+      <!-- Right side -->
+      <aside class="trip-list">
+        <h2>My Trip List (<span id="trip-count">0</span>)</h2>
+        <div id="trip-items" class="trip-items"></div>
+        <div class="trip-summary">
+          <p>Total Cost: $<span id="total-cost-bottom">0.00</span></p>
+          <button id="book-trip">Book Trip</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Add Custom Place</h3>
+      <label>Place Name</label>
+      <input type="text" id="custom-name" placeholder="e.g. Local Restaurant">
+
+      <label>Category</label>
+      <select id="custom-category">
+        <option value="Restaurant">Restaurant</option>
+        <option value="Museum">Museum</option>
+        <option value="Park">Park</option>
+        <option value="Landmark">Landmark</option>
+        <option value="Shopping">Shopping</option>
+      </select>
+
+      <label>Price ($)</label>
+      <input type="number" id="custom-price" placeholder="0.00">
+
+      <button id="add-custom">Add to Trip</button>
+      <button id="close-modal" class="cancel">Cancel</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
