@@ -100,13 +100,16 @@ function renderCities() {
     btn.className = selectedCity === key ? 'active' : '';
     btn.onclick = () => {
       selectedCity = key;
+      searchTerm = ''; // Resetting the search when changing the city
+      document.getElementById('search').value = ''; // Clearing the search field
+      filterCategory = 'All'; 
       renderCities();
+      renderFilters();
       renderPlaces();
     };
     cityButtons.appendChild(btn);
   }
 }
-
 
 function renderFilters() {
   const categories = ['All', 'Museum', 'Restaurant', 'Park', 'Landmark', 'Shopping'];
