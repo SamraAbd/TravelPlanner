@@ -118,12 +118,30 @@ header {
 }
 
 .place-card {
-  border: 2px solid #ddd;
-  border-radius: 10px;
+  display: flex;
+  gap: 12px;
   padding: 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
   cursor: pointer;
-  transition: 0.3s;
 }
+
+.place-image {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.place-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .place-card:hover {
   border-color: #2563eb;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
