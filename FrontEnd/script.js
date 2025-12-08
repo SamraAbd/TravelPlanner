@@ -181,6 +181,15 @@ function renderTrip() {
   tripCount.textContent = tripList.length;
 }
 
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('header');
+  if (window.scrollY > 30) {  
+    header.classList.add('shrink'); 
+  } else {
+    header.classList.remove('shrink'); 
+  }
+});
+
 function addToTrip(place) {
   if (!tripList.find(p => p.id === place.id)) {
     tripList.push(place);
