@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <script src="auth.js"></script>
+  <script>
+    requireLogin();
+  </script>
+
   <header>
     <div class="logo">
       <span>📍</span>
@@ -15,6 +20,8 @@
     <div class="trip-total">
       💵 Trip Total: $<span id="total-cost">0.00</span>
     </div>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+
   </header>
 
   <main>
