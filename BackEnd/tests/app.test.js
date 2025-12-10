@@ -1,17 +1,24 @@
-// import request from 'supertest';
-import  request  from 'supertest';
-import app from '../src';
-// import app from '../src/index.js';
+import request from 'supertest';
+import app from '../src'; // app obyektini index.js-dən alır
 import mongoose from 'mongoose';
 
+let server;
+beforeAll(async () => {
+    server = app.listen(5000); 
+});
+
 describe('GET /', () => {
-  test('should respond with 200 and contain title text', async () => {
-    const response = await request(app).get('/');
-    expect(response.statusCode).toBe(200);
-    expect(response.text).toContain('Backend is running');
-  });
+    test('should respond with 200 and contain title text', async () => {
+        const response = await request(app).get('/');
+        expect(response.statusCode).toBe(200);
+        expect(response.text).toContain('Backend is running');
+    });
 });
 
 afterAll(async () => {
-  await mongoose.connection.close();
+    if (server) {
+        await server.close(); 
+    }
+    
+    await mongoose.connection.close();
 });
