@@ -22,7 +22,23 @@ jobs:
     - name: Install dependencies
       run: npm ci
       working-directory: BackEnd
+      
+    # === KEŞLƏMƏ (CACHING) ADDIMI BURADA BAŞLAYIR ===
+    # Bu addım Jest-in əvvəlki işlərdən toplanmış məlumatlarını (keş) saxlayır və bərpa edir.
+    - uses: actions/cache@v4
+      name: Cache Jest results
+      with:
+        # Keş faylları "BackEnd" qovluğunun daxilində saxlanılacaq
+        path: BackEnd/.jest-cache 
+        # Keş açarı package-lock.json dəyişməyənə qədər eyni qalacaq
+        key: ${{ runner.os }}-jest-${{ hashFiles('BackEnd/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-jest-
+    # === KEŞLƏMƏ (CACHING) ADDIMI BİTİR ===
 
     - name: Run tests
-      run: npm test
+      # Əlavə optimallaşdırma: Jest-i CI mühiti üçün işə salın və 
+      # daha çox paralel nüvədən istifadə etməyə təşviq edin.
+      # Default olaraq `npm test` bu əmri işə salır: jest --ci --maxWorkers=4
+      run: npm test -- --ci --maxWorkers=4
       working-directory: BackEnd
