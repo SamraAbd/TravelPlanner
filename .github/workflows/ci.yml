@@ -22,23 +22,23 @@ jobs:
     - name: Install dependencies
       run: npm ci
       working-directory: BackEnd
-      
-    # === KEŞLƏMƏ (CACHING) ADDIMI BURADA BAŞLAYIR ===
-    # Bu addım Jest-in əvvəlki işlərdən toplanmış məlumatlarını (keş) saxlayır və bərpa edir.
+
+    # === CACHING STEP START ===
+    # This step saves and restores Jest cache to speed up the workflow.
     - uses: actions/cache@v4
       name: Cache Jest results
       with:
-        # Keş faylları "BackEnd" qovluğunun daxilində saxlanılacaq
-        path: BackEnd/.jest-cache 
-        # Keş açarı package-lock.json dəyişməyənə qədər eyni qalacaq
+        # Cache directory inside the BackEnd folder
+        path: BackEnd/.jest-cache
+        # Cache key changes only when package-lock.json changes
         key: ${{ runner.os }}-jest-${{ hashFiles('BackEnd/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-jest-
-    # === KEŞLƏMƏ (CACHING) ADDIMI BİTİR ===
+    # === CACHING STEP END ===
 
     - name: Run tests
-      # Əlavə optimallaşdırma: Jest-i CI mühiti üçün işə salın və 
-      # daha çox paralel nüvədən istifadə etməyə təşviq edin.
-      # Default olaraq `npm test` bu əmri işə salır: jest --ci --maxWorkers=4
       run: npm test -- --ci --maxWorkers=4
       working-directory: BackEnd
+      env:
+        # Pulls MONGO_URI from GitHub Secrets and injects it into the environment
+        MONGO_URI: ${{ secrets.MONGO_URI }}
