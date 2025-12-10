@@ -1,5 +1,5 @@
 import swaggerJsDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+
 
 const options = {
   definition: {
@@ -8,10 +8,26 @@ const options = {
       title: "Travel Planner API",
       version: "1.0.0",
     },
+
+    // ❗ COMPONENTS BURADA OLMALIDIR (definition içində)
+    components: { 
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+
+    // ❗ GLOBAL SECURITY də BURADA OLMALIDIR
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
-  apis: ["./src/Routes/*.js"],
+
+  apis: ["./src/Routes/*.js"], // Sənin folder strukturuna uyğunlaşdırdım
 };
 
-export const swaggerSpec = swaggerJsDoc(options);
-export const swaggerUiSetup = swaggerUi.serve;
-export const swaggerUiDocs = swaggerUi.setup(swaggerSpec);

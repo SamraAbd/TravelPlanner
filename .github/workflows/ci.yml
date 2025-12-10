@@ -23,6 +23,22 @@ jobs:
       run: npm ci
       working-directory: BackEnd
 
+    # === CACHING STEP START ===
+    # This step saves and restores Jest cache to speed up the workflow.
+    - uses: actions/cache@v4
+      name: Cache Jest results
+      with:
+        # Cache directory inside the BackEnd folder
+        path: BackEnd/.jest-cache
+        # Cache key changes only when package-lock.json changes
+        key: ${{ runner.os }}-jest-${{ hashFiles('BackEnd/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-jest-
+    # === CACHING STEP END ===
+
     - name: Run tests
-      run: npm test
+      run: npm test -- --ci --maxWorkers=4
       working-directory: BackEnd
+      env:
+        # Pulls MONGO_URI from GitHub Secrets and injects it into the environment
+        MONGO_URI: ${{ secrets.MONGO_URI }}
