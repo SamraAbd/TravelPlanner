@@ -1,5 +1,6 @@
 import swaggerJsDoc from "swagger-jsdoc";
 
+
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -30,4 +31,3 @@ const options = {
   apis: ["./src/Routes/*.js"], // Sənin folder strukturuna uyğunlaşdırdım
 };
 
-export const swaggerSpec = swaggerJsDoc(options);
