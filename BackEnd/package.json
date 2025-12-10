@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "dotenvx run -- jest --ci --maxWorkers=4"
+    "test": "jest --ci --maxWorkers=4"
   },
   "repository": {
     "type": "git",
