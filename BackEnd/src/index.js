@@ -1,30 +1,26 @@
-const express = require('express');
-const path = require('path');
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import citiesRoutes from "./Routes/cities.js";
+import { swaggerSpec, swaggerUiSetup, swaggerUiDocs } from "./swagger/swagger.js";
+import connectDB from "./config/db.js";
+
+dotenv.config();
+connectDB()
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
-// Serve static files from FrontEnd
-app.use(express.static(path.join(__dirname, '../../FrontEnd')));
-
-// Serve index.html for GET /
-app.get('/', (req, res) => {
-  const filePath = path.join(__dirname, '../../FrontEnd/index.html');
-  console.log('Serving file:', filePath); // yoxlama üçün
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      console.error('Error sending file:', err);
-      res.status(500).send('File not found');
-    }
-  });
+// Test route
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
 });
 
-// Export app for testing
-module.exports = app;
+app.use("/cities", citiesRoutes);
+app.use("/api-docs", swaggerUiSetup, swaggerUiDocs);
 
-// Start server only if file is run directly
-if (require.main === module) {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+export default app
