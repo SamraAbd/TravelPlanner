@@ -3,11 +3,11 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-dotenv.config(); // .env faylındakı JWT_SECRET-i yükləyir
+dotenv.config(); //Load JWT_SECRET from the .env file
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d', // Tokenin etibarlılıq müddəti: 30 gün
+        expiresIn: '30d', //Token expiration time:30 days
     });
 };
 

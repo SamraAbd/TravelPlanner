@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src'; // app obyektini index.js-dən alır
+import app from '../src'; //Import the app object from index.js
 import mongoose from 'mongoose';
 
 let server;

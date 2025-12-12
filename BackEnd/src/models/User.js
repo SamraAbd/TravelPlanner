@@ -4,51 +4,49 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const userSchema = mongoose.Schema({
-    // İstifadəçinin unikal istifadəçi adı
+    //Unique username of the user
     username: {
         type: String,
         required: true,
         unique: true
     },
-    // İstifadəçinin unikal email ünvanı
+    //Unique email address of the user
     email: {
         type: String,
         required: true,
         unique: true
     },
-    // İstifadəçinin parolu (heşlənmiş formada saxlanacaq)
+    //User password (stored in hashed form)
     password: {
         type: String,
         required: true
     },
-    // Rol təyinatı (Admin paneli üçün vacibdir)
     isAdmin: { 
         type: Boolean,
         required: true,
         default: false
     },
 }, {
-    // Yaradılma və yenilənmə vaxtlarını avtomatik qeyd edir
     timestamps: true 
 });
 
-// ***************** PRE-SAVE HOOK (Parolun Heşlənməsi) *****************
-// Bu funksiya istifadəçi (User) obyekti verilənlər bazasına 'save' olunmazdan əvvəl işə düşür.
+//PRE-SAVE HOOK (PASSWORD HASHING)
+//This function runs before saving the user document to the database
 userSchema.pre('save', async function (next) {
-    // Əgər parol dəyişməyibsə (məsələn, yalnız email yenilənirsə), heşləməyi ötür.
+    //If the password was not modified (for example, only email was updated), skip hashing
     if (!this.isModified('password')) {
         next();
     }
     
-    // 1. Təsadüfi "salt" (duz) yaradır
+    //1.Generate a random salt
     const salt = await bcrypt.genSalt(10);
     
-    // 2. Parolu həmin "salt" ilə heşləyir (şifrələyir)
+    //2.Hash the password using the generated salt
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-// ***************** METODLAR (Parolun Müqayisəsi) *****************
-// Giriş zamanı istifadəçi tərəfindən daxil edilən parolu DB-dəki heşlənmiş parolla müqayisə etmək üçün metod.
+//METHODS (PASSWORD COMPARISON)
+//Method to compare entered password with the hashed password in the database
 userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };

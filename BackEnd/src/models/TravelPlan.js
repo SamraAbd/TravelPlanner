@@ -3,22 +3,19 @@
 import mongoose from 'mongoose';
 
 const travelPlanSchema = mongoose.Schema({
-    // Bu planın hansı istifadəçiyə aid olduğunu göstərən istinad (reference)
+    //Reference to the user who owns this plan
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User', // User modelinə istinad edir
+        ref: 'User', 
     },
-    // Səyahətin adı (məsələn, "Paris Səfəri 2025")
     title: {
         type: String,
         required: true,
     },
-    // Səyahətin təsviri
     description: {
         type: String,
     },
-    // Səyahətin başlanğıc və son tarixləri
     startDate: {
         type: Date,
         required: true,
@@ -27,23 +24,20 @@ const travelPlanSchema = mongoose.Schema({
         type: Date,
         required: true,
     },
-    // Bu planda ziyarət ediləcək yerlərin siyahısı
     places: [
         {
             name: { type: String, required: true },
             city: { type: String, required: true },
             notes: { type: String },
-            // Ziyarət tarixi (opsional)
             visitDate: { type: Date }, 
         },
     ],
-    // Planın büdcəsi (opsional)
     budget: {
         type: Number,
         default: 0,
     }
 }, {
-    timestamps: true // Yaradılma və yenilənmə vaxtlarını avtomatik qeyd edir
+    timestamps: true 
 });
 
 const TravelPlan = mongoose.model('TravelPlan', travelPlanSchema);

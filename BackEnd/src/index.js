@@ -13,15 +13,15 @@ dotenv.config();
 connectDB();
 
 const swaggerUiSetup = swaggerUi.setup(swaggerSpec, {
-    // Bu seçimlər Authorize düyməsinin görünməsinə kömək edir
+    //These options help the Authorize button work correctly
     swaggerOptions: {
-        // Təhlükəsizlik sxeminin avtomatik dəyərləndirilməsini aktiv edir
+        //Enable automatic evaluation of the security scheme
         supportedSubmitMethods: ['get', 'post', 'put', 'delete'], 
         
-        // Autorizasiya sahəsini avtomatik açmağa kömək edir (opsional)
+        //Help keep authorization data after page refresh (optional)
         persistAuthorization: true 
     },
-    explorer: true // Axtarış çubuğunu aktivləşdirir (opsional)
+    explorer: true //Enable the search bar (optional)
 });
 
 const app = express();

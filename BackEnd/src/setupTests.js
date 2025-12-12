@@ -1,8 +1,8 @@
 // BackEnd/setupTests.js
 import dotenv from 'dotenv';
 
-// .env faylını Jest test mühitinə yükləyin
+//Load the .env file into the Jest test environment
 dotenv.config({ path: './.env' }); 
 
-// Əgər TEST mühiti üçün fərqli bir DB istifadə etmək istəyirsinizsə:
-// process.env.MONGO_URI = process.env.TEST_MONGO_URI;
+//If you want to use a different database for the TEST environment:
+//process.env.MONGO_URI = process.env.TEST_MONGO_URI;

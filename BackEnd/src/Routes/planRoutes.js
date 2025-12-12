@@ -8,7 +8,7 @@ import {
     updatePlan, 
     deletePlan 
 } from '../controllers/planController.js';
-import { protect } from '../middleware/authMiddleware.js'; // Qoruma funksiyasını import edirik
+import { protect } from '../middleware/authMiddleware.js'; 
 
 const router = express.Router();
 

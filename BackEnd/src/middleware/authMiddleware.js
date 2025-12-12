@@ -6,50 +6,49 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// ***************** 1. QORUMA (PROTECT) FUNKSIYASI *****************
+//1.PROTECT FUNCTION 
 export const protect = async (req, res, next) => {
     let token;
 
-    // 1. HTTP Başlıqlarında (Headers) 'Bearer' tokenin olmasını yoxla
+    //1.Check if Authorization header contains a Bearer token
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {
         try {
-            // Tokeni 'Bearer' hissəsindən ayırırıq
+            //Extract the token from the Bearer string
             token = req.headers.authorization.split(' ')[1];
 
-            // 2. Tokeni Təsdiqlə (Verify)
-            // JWT_SECRET açarından istifadə edərək tokeni deşifrə edirik
+            //2.Verify the token using the secret key
+            //Decode the token using JWT_SECRET
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            // 3. İstifadəçini DB-də Tap
-            // Tokenin içindəki ID ilə istifadəçini tapırıq və parolu daxil etmirik (-password)
+            //3.Find the user in the database
+            //Get user by ID from token and exclude the password field
             req.user = await User.findById(decoded.id).select('-password');
             
-            // Hər şey düzgündürsə, növbəti funksiyaya keç (Controller)
+            //If everything is valid, move to the next function (controller)
             next();
 
         } catch (error) {
             console.error('Token Xətası:', error);
-            // 401 Unauthorized status kodu
+            //401 Unauthorized status code
             res.status(401).json({ message: 'Token etibarsızdır və ya müddəti bitib.' });
         }
     }
 
-    // Əgər token yoxdursa
+    //If no token is found
     if (!token) {
         res.status(401).json({ message: 'Avtorizasiya uğursuz oldu, token tapılmadı.' });
     }
 };
 
-// ***************** 2. ADMIN YOXLANMASI FUNKSIYASI *****************
+//2.ADMIN CHECK FUNCTION
 export const admin = (req, res, next) => {
-    // 'protect' funksiyası uğurlu olarsa, req.user artıq mövcud olacaq.
+    //If protect middleware passed, req.user will be available
     if (req.user && req.user.isAdmin) {
-        next(); // Admindirsə, icazə ver
+        next(); //Allow access if user is admin
     } else {
-        // 401 Unauthorized status kodu
         res.status(401).json({ message: 'Admin icazəsi tələb olunur.' });
     }
 };
