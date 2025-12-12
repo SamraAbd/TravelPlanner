@@ -78,8 +78,8 @@ export default function Home() {
         
       <header className="header">
         <div className="logo">
-          <span className="pin">📍</span>
-          <h1>Travel Planner</h1>
+          <span><img style={{ height: "80px" }}src="/logo.png" alt="" /></span>
+          <h1>Travella</h1>
         </div>
 
         <div className="trip-total">
@@ -152,6 +152,10 @@ export default function Home() {
           setTripList={setTripList}
         />
       )}
+
+      <footer style={{padding:"10px", textAlign: "center", background:"white"}}>
+        <p>Copyright&copy;2025 Travella app</p>
+      </footer>
     </main>
   );
 }
