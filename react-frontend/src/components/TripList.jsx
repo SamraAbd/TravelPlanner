@@ -1,4 +1,5 @@
 export default function TripList({ tripList, removeFromTrip, totalCost }) {
+  //If trip list is empty or not provided, show a placeholder message
   if (!tripList || tripList.length === 0) {
     return <p>Trips will appear here</p>;
   }

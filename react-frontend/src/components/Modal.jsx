@@ -4,21 +4,23 @@ export default function Modal({ setIsModalOpen, tripList, setTripList }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Restaurant");
   const [price, setPrice] = useState("");
-
+  
+  //Function to add a custom place to the trip list
   const addCustomPlace = () => {
     if (!name || price === "") return;
 
+    //Update trip list by adding a new custom place
     setTripList([
       ...tripList,
       {
-        id: Date.now(),
+        id: Date.now(),//Generate a unique id using timestamp
         name,
         category,
         price: Number(price),
         description: "Custom place",
       },
     ]);
-
+    //Close the modal after adding the place
     setIsModalOpen(false);
   };
 
