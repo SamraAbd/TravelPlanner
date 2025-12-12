@@ -84,7 +84,7 @@ header.shrink {
 }
 
 .city-buttons button.active {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #000000, #000000);
   box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
   transform: translateY(-2px);
 }
