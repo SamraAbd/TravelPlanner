@@ -1,13 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Modal({ setIsModalOpen, tripList, setTripList }) {
+export default function Modal({
+  setIsModalOpen,
+  tripList,
+  setTripList,
+  cities,
+  selectedCity,
+}) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Restaurant");
   const [price, setPrice] = useState("");
+<<<<<<< HEAD
   
   //Function to add a custom place to the trip list
+=======
+  const [city, setCity] = useState(selectedCity || "");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Keep city in sync with parent selection
+    setCity((prev) => (prev ? prev : selectedCity || ""));
+  }, [selectedCity]);
+
+>>>>>>> a9dd15e (Refactor UI components and pages; update dependencies across frontend and backend)
   const addCustomPlace = () => {
-    if (!name || price === "") return;
+    if (!name || price === "" || !city) {
+      setError("Please fill name, price, and select a city.");
+      return;
+    }
+
+    setError("");
 
     //Update trip list by adding a new custom place
     setTripList([
@@ -18,6 +40,7 @@ export default function Modal({ setIsModalOpen, tripList, setTripList }) {
         category,
         price: Number(price),
         description: "Custom place",
+        city,
       },
     ]);
     //Close the modal after adding the place
@@ -28,6 +51,18 @@ export default function Modal({ setIsModalOpen, tripList, setTripList }) {
     <div className="modal-overlay">
       <div className="modal-card">
         <h2>Add Custom Place</h2>
+
+        {error && <p style={{ color: "salmon" }}>{error}</p>}
+
+        <label>City</label>
+        <select value={city} onChange={(e) => setCity(e.target.value)}>
+          <option value="">Select a city</option>
+          {cities?.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
 
         <label>Place Name</label>
         <input

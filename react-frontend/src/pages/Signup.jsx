@@ -1,28 +1,33 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { signup } from "../services/authService";
 
 export default function Signup() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = () => {
-    if (!username || !password) {
+  const handleSignup = async () => {
+    if (!username || !email || !password) {
       alert("Please fill in all fields");
       return;
     }
 
-    // check if user already exists
-    if (localStorage.getItem("user_" + username)) {
-      alert("User already exists. Please login.");
-      return;
+    setLoading(true);
+    try {
+      const res = await signup({ username, email, password });
+      // Auto-login after signup
+      localStorage.setItem("auth_token", res.token);
+      localStorage.setItem("auth_user", JSON.stringify(res));
+      navigate("/");
+    } catch (err) {
+      const message = err?.message || err?.error || "Signup failed";
+      alert(message);
+    } finally {
+      setLoading(false);
     }
-
-    const userData = { username, password };
-    localStorage.setItem("user_" + username, JSON.stringify(userData));
-
-    alert("Account created! You can log in now.");
-    navigate("/login");
   };
 
   return (
@@ -39,6 +44,14 @@ export default function Signup() {
         />
 
         <input
+          type="email"
+          placeholder="Email"
+          className="auth-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
           type="password"
           placeholder="Password"
           className="auth-input"
@@ -46,8 +59,8 @@ export default function Signup() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="auth-btn" onClick={handleSignup}>
-          Create Account
+        <button className="auth-btn" onClick={handleSignup} disabled={loading}>
+          {loading ? "Creating..." : "Create Account"}
         </button>
 
         <p className="auth-switch">

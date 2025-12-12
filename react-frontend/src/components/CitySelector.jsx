@@ -1,15 +1,16 @@
-import { CITIES_DATA } from "../data/cities";
+export default function CitySelector({ cities, selectedCity, setSelectedCity, loading }) {
+  if (loading) return <p>Loading cities...</p>;
+  if (!cities || cities.length === 0) return <p>No cities found.</p>;
 
-export default function CitySelector({ selectedCity, setSelectedCity }) {
   return (
     <div id="city-buttons">
-      {Object.entries(CITIES_DATA).map(([key, city]) => (
+      {cities.map((city) => (
         <button
-          key={key}
-          className={selectedCity === key ? "active" : ""}
-          onClick={() => setSelectedCity(key)}
+          key={city}
+          className={selectedCity === city ? "active" : ""}
+          onClick={() => setSelectedCity(city)}
         >
-          {city.name}
+          {city}
         </button>
       ))}
     </div>

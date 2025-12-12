@@ -4,8 +4,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
 function ProtectedRoute({ children }) {
-  const logged = localStorage.getItem("logged_in_user");
-  return logged ? children : <Navigate to="/login" />;
+  const isAuthed = !!localStorage.getItem("auth_token");
+  return isAuthed ? children : <Navigate to="/login" />;
 }
 
 export default function App() {

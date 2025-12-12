@@ -1,36 +1,32 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { login } from "../services/authService";
 
 export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!username || !password) {
       alert("Please fill in all fields");
       return;
     }
 
-    const stored = localStorage.getItem("user_" + username);
-
-    if (!stored) {
-      alert("User not found. Please sign up first.");
-      return;
+    setLoading(true);
+    try {
+      const res = await login({ email: username, password });
+      // Persist auth for protected routes
+      localStorage.setItem("auth_token", res.token);
+      localStorage.setItem("auth_user", JSON.stringify(res));
+      navigate("/");
+    } catch (err) {
+      const message = err?.message || err?.error || "Login failed";
+      alert(message);
+    } finally {
+      setLoading(false);
     }
-
-    const user = JSON.parse(stored);
-
-    if (user.password !== password) {
-      alert("Wrong password");
-      return;
-    }
-
-    // mark user as logged in
-    localStorage.setItem("logged_in_user", username);
-
-    // go to home page with cities
-    navigate("/");
   };
 
   return (
@@ -54,8 +50,8 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="auth-btn" onClick={handleLogin}>
-          Login
+        <button className="auth-btn" onClick={handleLogin} disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         <p className="auth-switch">
